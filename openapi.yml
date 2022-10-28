@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   title: api
-  version: 0.0.8
+  version: 0.0.19
 paths:
   /v1/apps/{app_id}/users/{user_id}/devices:
     post:
@@ -701,4 +701,3 @@ components:
       name: Authorization
 servers:
   - url: https://api.ravenapp.dev
-  
