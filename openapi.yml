@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   title: api
-  version: 0.0.30
+  version: 0.0.31
 paths:
   /v1/apps/{app_id}/users/{user_id}/devices:
     post:
@@ -279,8 +279,6 @@ components:
           items:
             type: string
           description: List of fcm tokens.  eg. ["<fcmtoken1", "<fcmtoken2>"]
-      required:
-        - user_id
     EventEventOverride:
       type: object
       properties:
