@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   title: api
-  version: 0.0.33
+  version: '0.034'
 paths:
   /v1/apps/{app_id}/users/{user_id}/devices:
     post:
@@ -274,11 +274,29 @@ components:
           description: >-
             [OneSignal external user
             IDs](https://documentation.onesignal.com/docs/external-user-ids)
+        onesignal_player_ids:
+          type: array
+          items:
+            type: string
         fcm_tokens:
           type: array
           items:
             type: string
           description: List of fcm tokens.  eg. ["<fcmtoken1", "<fcmtoken2>"]
+        ios_tokens:
+          type: array
+          items:
+            type: string
+        slack:
+          $ref: '#/components/schemas/UserSlackProfile'
+        telegram:
+          $ref: '#/components/schemas/UserTelegramProfile'
+        fcm_topic:
+          type: string
+        fcm_device_group:
+          type: string
+        in_app:
+          $ref: '#/components/schemas/UserInAppProfile'
     EventEventOverride:
       type: object
       properties:
@@ -577,14 +595,6 @@ components:
           description: >-
             Include this only when user's whatsapp mobile is different than
             primary mobile
-        fcm_topic:
-          type: array
-          items:
-            type: string
-        fcm_device_group:
-          type: array
-          items:
-            type: string
         slack:
           $ref: '#/components/schemas/UserSlackProfile'
         in_app:
@@ -603,16 +613,6 @@ components:
           type: array
           items:
             type: string
-        available_channels:
-          type: array
-          items:
-            $ref: '#/components/schemas/UserChannel'
-        devices:
-          type: array
-          items:
-            $ref: '#/components/schemas/DeviceDevice'
-        user_preferences:
-          $ref: '#/components/schemas/UserUserPreferences'
         created_at:
           type: integer
           format: int64
@@ -621,7 +621,6 @@ components:
           format: int64
       required:
         - user_id
-        - devices
     UserSlackProfile:
       type: object
       properties:
