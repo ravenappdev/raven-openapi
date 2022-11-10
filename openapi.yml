@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   title: api
-  version: 0.0.35
+  version: 0.0.36
 paths:
   /v1/apps/{app_id}/users/{user_id}/devices:
     post:
@@ -295,8 +295,6 @@ components:
           type: string
         fcm_device_group:
           type: string
-        in_app:
-          $ref: '#/components/schemas/UserInAppProfile'
     EventEventOverride:
       type: object
       properties:
@@ -597,8 +595,6 @@ components:
             primary mobile
         slack:
           $ref: '#/components/schemas/UserSlackProfile'
-        in_app:
-          $ref: '#/components/schemas/UserInAppProfile'
         telegram:
           $ref: '#/components/schemas/UserTelegramProfile'
         fcm_tokens:
@@ -632,15 +628,6 @@ components:
           type: string
       required:
         - access_token
-        - email
-        - channel_id
-    UserInAppProfile:
-      type: object
-      properties:
-        last_open:
-          type: string
-      required:
-        - last_open
     UserTelegramProfile:
       type: object
       properties:
