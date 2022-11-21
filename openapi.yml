@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   title: api
-  version: 0.0.36
+  version: 0.0.37
 paths:
   /v1/apps/{app_id}/users/{user_id}/devices:
     post:
@@ -44,6 +44,72 @@ paths:
             schema:
               $ref: '#/components/schemas/DeviceDevice'
   /v1/apps/{app_id}/users/{user_id}/devices/{device_id}:
+    put:
+      description: Update a Device for a User.
+      operationId: DeviceService.update
+      tags:
+        - DeviceService
+      parameters:
+        - name: app_id
+          in: path
+          description: your app identifier
+          required: true
+          schema:
+            $ref: '#/components/schemas/IdsAppId'
+        - name: user_id
+          in: path
+          description: your user identifier
+          required: true
+          schema:
+            $ref: '#/components/schemas/IdsUserId'
+        - name: device_id
+          in: path
+          description: your device identifier; the same as device_sid
+          required: true
+          schema:
+            $ref: '#/components/schemas/IdsDeviceId'
+      responses:
+        '200':
+          description: Returns the updated Device
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceDevice'
+      security: *ref_0
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeviceDevice'
+    delete:
+      description: Delete a Device for a User
+      operationId: DeviceService.delete
+      tags:
+        - DeviceService
+      parameters:
+        - name: app_id
+          in: path
+          description: your app identifier
+          required: true
+          schema:
+            $ref: '#/components/schemas/IdsAppId'
+        - name: user_id
+          in: path
+          description: your user identifier
+          required: true
+          schema:
+            $ref: '#/components/schemas/IdsUserId'
+        - name: device_id
+          in: path
+          description: your device identifier
+          required: true
+          schema:
+            $ref: '#/components/schemas/IdsDeviceId'
+      responses:
+        '204':
+          description: ''
+      security: *ref_0
     get:
       description: Get a Device for a User
       operationId: DeviceService.getDevice
