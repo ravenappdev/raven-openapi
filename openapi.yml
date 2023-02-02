@@ -179,160 +179,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/Device'
       security: *ref_0
-  /v1/apps/{app_id}/events/send:
-    post:
-      description: This endpoint allows you to send messages
-      operationId: eventService.send
-      tags:
-        - Event
-      parameters:
-        - name: app_id
-          in: path
-          description: The `id` of the app
-          required: true
-          schema:
-            $ref: '#/components/schemas/AppId'
-          examples:
-            Example1:
-              value: my_app_id
-            Example2:
-              value: my_app_id
-      responses:
-        '200':
-          description: ''
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SendEventResponse'
-              examples:
-                Example1:
-                  value:
-                    id: 1d1ed73c-96e6-4aa3-abc2-2e9a926f773a
-                    success: true
-        '404':
-          description: ''
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/EventNotFoundErrorBody'
-              examples:
-                Example1:
-                  value:
-                    success: false
-                    error: event not found
-      security: *ref_0
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                event:
-                  type: string
-                  description: The name of the event
-                  example: sample_event_1
-                data:
-                  type: object
-                  additionalProperties: {}
-                user:
-                  $ref: '#/components/schemas/User'
-                scheduleAt:
-                  type: integer
-                  format: int64
-                  description: |
-                    Time to send message expressed as UTC milliseconds. 
-                    If not present, message will be sent immediately.
-                override:
-                  $ref: '#/components/schemas/EventOverride'
-              required:
-                - event
-                - data
-            examples:
-              Example1:
-                value:
-                  event: sample_event_1
-                  data:
-                    name: name
-                    date: 01 December 2022
-                  user:
-                    mobile: '+919876543210'
-                    email: x@ravenapp.dev
-                    whatsapp_mobile: '+919876543210'
-              Example2:
-                value:
-                  event: sample_event_1
-                  data:
-                    name: name
-                    date: 01 December 2022
-                  user:
-                    mobile: '+919876543210'
-                    email: x@ravenapp.dev
-                    whatsapp_mobile: '+919876543210'
-  /v1/apps/{app_id}/events/bulk_send:
-    post:
-      operationId: eventService.sendBulk
-      tags:
-        - Event
-      parameters:
-        - name: app_id
-          in: path
-          required: true
-          schema:
-            $ref: '#/components/schemas/AppId'
-          examples:
-            Example1:
-              value: my-app-id
-      responses:
-        '200':
-          description: ''
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SendEventResponse'
-              examples:
-                Example1:
-                  value:
-                    id: 1d1ed73c-96e6-4aa3-abc2-2e9a926f773a
-                    success: true
-      security: *ref_0
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                event:
-                  type: string
-                  example: sample_event_1
-                batch:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/BatchEvent'
-                  description: List of events
-              required:
-                - event
-                - batch
-            examples:
-              Example1:
-                value:
-                  event: sample_event_1
-                  batch:
-                    - user:
-                        mobile: '+919876543210'
-                        email: x@ravenapp.dev
-                        whatsapp_mobile: '+919876543210'
-                      data:
-                        name: John Doe
-                        date: 01 December 2022
-                    - user:
-                        mobile: '+919876543210'
-                        email: x@ravenapp.dev
-                        whatsapp_mobile: '+919876543210'
-                      data:
-                        name: John Doe
-                        date: 01 December 2022
   /v1/apps/{app_id}/users:
     post:
       description: Creates an AppUser if doesn't exist already, or updates user properties
@@ -434,6 +280,160 @@ paths:
                       email: x@ravenapp.dev
                       channel_id: channel-123
       security: *ref_0
+  /v1/apps/{app_id}/events/send:
+    post:
+      description: This endpoint allows you to send messages
+      operationId: Service.send
+      tags:
+        - ''
+      parameters:
+        - name: app_id
+          in: path
+          description: The `id` of the app
+          required: true
+          schema:
+            $ref: '#/components/schemas/AppId'
+          examples:
+            Example1:
+              value: my_app_id
+            Example2:
+              value: my_app_id
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SendEventResponse'
+              examples:
+                Example1:
+                  value:
+                    id: 1d1ed73c-96e6-4aa3-abc2-2e9a926f773a
+                    success: true
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventNotFoundErrorBody'
+              examples:
+                Example1:
+                  value:
+                    success: false
+                    error: event not found
+      security: *ref_0
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                event:
+                  type: string
+                  description: The name of the event
+                  example: sample_event_1
+                data:
+                  type: object
+                  additionalProperties: {}
+                user:
+                  $ref: '#/components/schemas/User'
+                scheduleAt:
+                  type: integer
+                  format: int64
+                  description: |
+                    Time to send message expressed as UTC milliseconds. 
+                    If not present, message will be sent immediately.
+                override:
+                  $ref: '#/components/schemas/EventOverride'
+              required:
+                - event
+                - data
+            examples:
+              Example1:
+                value:
+                  event: sample_event_1
+                  data:
+                    name: name
+                    date: 01 December 2022
+                  user:
+                    mobile: '+919876543210'
+                    email: x@ravenapp.dev
+                    whatsapp_mobile: '+919876543210'
+              Example2:
+                value:
+                  event: sample_event_1
+                  data:
+                    name: name
+                    date: 01 December 2022
+                  user:
+                    mobile: '+919876543210'
+                    email: x@ravenapp.dev
+                    whatsapp_mobile: '+919876543210'
+  /v1/apps/{app_id}/events/bulk_send:
+    post:
+      operationId: Service.sendBulk
+      tags:
+        - ''
+      parameters:
+        - name: app_id
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/AppId'
+          examples:
+            Example1:
+              value: my-app-id
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SendEventResponse'
+              examples:
+                Example1:
+                  value:
+                    id: 1d1ed73c-96e6-4aa3-abc2-2e9a926f773a
+                    success: true
+      security: *ref_0
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                event:
+                  type: string
+                  example: sample_event_1
+                batch:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/BatchEvent'
+                  description: List of events
+              required:
+                - event
+                - batch
+            examples:
+              Example1:
+                value:
+                  event: sample_event_1
+                  batch:
+                    - user:
+                        mobile: '+919876543210'
+                        email: x@ravenapp.dev
+                        whatsapp_mobile: '+919876543210'
+                      data:
+                        name: John Doe
+                        date: 01 December 2022
+                    - user:
+                        mobile: '+919876543210'
+                        email: x@ravenapp.dev
+                        whatsapp_mobile: '+919876543210'
+                      data:
+                        name: John Doe
+                        date: 01 December 2022
 components:
   schemas:
     Device:
@@ -475,6 +475,122 @@ components:
         - android
         - web
         - ios
+    AppId:
+      type: string
+    UserId:
+      type: string
+    RequestId:
+      type: string
+    DeviceId:
+      type: string
+    RavenUser:
+      type: object
+      properties:
+        user_id:
+          $ref: '#/components/schemas/UserId'
+          description: >
+            Your user identifier. 
+
+            If user_id already exists, user properties will be updated else a
+            new user will be created
+        user_sid:
+          type: string
+        onesignal_external_id:
+          type: string
+        mobile:
+          type: string
+        email:
+          type: string
+        whatsapp_mobile:
+          type: string
+          description: >-
+            Include this only when user's whatsapp mobile is different than
+            primary mobile
+        slack:
+          $ref: '#/components/schemas/SlackProfile'
+        telegram:
+          $ref: '#/components/schemas/TelegramProfile'
+        fcm_tokens:
+          type: array
+          items:
+            type: string
+        onesignal_player_ids:
+          type: array
+          items:
+            type: string
+        ios_tokens:
+          type: array
+          items:
+            type: string
+        created_at:
+          type: integer
+          format: int64
+        updated_at:
+          type: integer
+          format: int64
+      required:
+        - user_id
+    SlackProfile:
+      type: object
+      properties:
+        access_token:
+          type: string
+        email:
+          type: string
+        channel_id:
+          type: string
+      required:
+        - access_token
+    TelegramProfile:
+      type: object
+      properties:
+        chat_id:
+          type: string
+      required:
+        - chat_id
+    UserPreferences:
+      type: object
+      properties:
+        preferred_channel:
+          $ref: '#/components/schemas/Channel'
+        channel_preferences:
+          $ref: '#/components/schemas/ChannelPreferences'
+    Channel:
+      type: string
+      enum:
+        - VOICE
+        - PUSH
+        - SMS
+        - EMAIL
+        - WHATSAPP
+        - WEBHOOK
+        - SLACK
+        - IN_APP
+        - TELEGRAM
+    ChannelPreferences:
+      type: object
+      properties:
+        sms:
+          $ref: '#/components/schemas/ChannelPreference'
+        push:
+          $ref: '#/components/schemas/ChannelPreference'
+        whatsapp:
+          $ref: '#/components/schemas/ChannelPreference'
+        email:
+          $ref: '#/components/schemas/ChannelPreference'
+        slack:
+          $ref: '#/components/schemas/ChannelPreference'
+        voice:
+          $ref: '#/components/schemas/ChannelPreference'
+        teams:
+          $ref: '#/components/schemas/ChannelPreference'
+    ChannelPreference:
+      type: object
+      properties:
+        disabled:
+          type: boolean
+      required:
+        - disabled
     User:
       type: object
       properties:
@@ -767,122 +883,6 @@ components:
       required:
         - success
         - error
-    AppId:
-      type: string
-    UserId:
-      type: string
-    RequestId:
-      type: string
-    DeviceId:
-      type: string
-    RavenUser:
-      type: object
-      properties:
-        user_id:
-          $ref: '#/components/schemas/UserId'
-          description: >
-            Your user identifier. 
-
-            If user_id already exists, user properties will be updated else a
-            new user will be created
-        user_sid:
-          type: string
-        onesignal_external_id:
-          type: string
-        mobile:
-          type: string
-        email:
-          type: string
-        whatsapp_mobile:
-          type: string
-          description: >-
-            Include this only when user's whatsapp mobile is different than
-            primary mobile
-        slack:
-          $ref: '#/components/schemas/SlackProfile'
-        telegram:
-          $ref: '#/components/schemas/TelegramProfile'
-        fcm_tokens:
-          type: array
-          items:
-            type: string
-        onesignal_player_ids:
-          type: array
-          items:
-            type: string
-        ios_tokens:
-          type: array
-          items:
-            type: string
-        created_at:
-          type: integer
-          format: int64
-        updated_at:
-          type: integer
-          format: int64
-      required:
-        - user_id
-    SlackProfile:
-      type: object
-      properties:
-        access_token:
-          type: string
-        email:
-          type: string
-        channel_id:
-          type: string
-      required:
-        - access_token
-    TelegramProfile:
-      type: object
-      properties:
-        chat_id:
-          type: string
-      required:
-        - chat_id
-    UserPreferences:
-      type: object
-      properties:
-        preferred_channel:
-          $ref: '#/components/schemas/Channel'
-        channel_preferences:
-          $ref: '#/components/schemas/ChannelPreferences'
-    Channel:
-      type: string
-      enum:
-        - VOICE
-        - PUSH
-        - SMS
-        - EMAIL
-        - WHATSAPP
-        - WEBHOOK
-        - SLACK
-        - IN_APP
-        - TELEGRAM
-    ChannelPreferences:
-      type: object
-      properties:
-        sms:
-          $ref: '#/components/schemas/ChannelPreference'
-        push:
-          $ref: '#/components/schemas/ChannelPreference'
-        whatsapp:
-          $ref: '#/components/schemas/ChannelPreference'
-        email:
-          $ref: '#/components/schemas/ChannelPreference'
-        slack:
-          $ref: '#/components/schemas/ChannelPreference'
-        voice:
-          $ref: '#/components/schemas/ChannelPreference'
-        teams:
-          $ref: '#/components/schemas/ChannelPreference'
-    ChannelPreference:
-      type: object
-      properties:
-        disabled:
-          type: boolean
-      required:
-        - disabled
   securitySchemes:
     AuthorizationAuth:
       type: apiKey
