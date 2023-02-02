@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
-  title: api
-  version: 0.0.11
+  title: Raven API
+  version: ''
 paths:
   /v1/apps/{app_id}/users/{user_id}/devices:
     post:
@@ -12,29 +12,40 @@ paths:
         found.
 
         If no device_sid is specified, then a new device will be created.
-      operationId: DeviceService.add
+      operationId: deviceService.add
       tags:
-        - DeviceService
+        - Device
       parameters:
         - name: app_id
           in: path
           description: your app identifier
           required: true
           schema:
-            $ref: '#/components/schemas/IdsAppId'
+            $ref: '#/components/schemas/AppId'
+          examples:
+            Example1:
+              value: my-app-id
         - name: user_id
           in: path
           description: your user identifier
           required: true
           schema:
-            $ref: '#/components/schemas/IdsUserId'
+            $ref: '#/components/schemas/UserId'
+          examples:
+            Example1:
+              value: my-user-id
       responses:
         '200':
           description: Returns the updated Device
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DeviceDevice'
+                $ref: '#/components/schemas/Device'
+              examples:
+                Example1:
+                  value:
+                    id: my-device-id
+                    platform: android
       security: &ref_0
         - AuthorizationAuth: []
       requestBody:
@@ -42,219 +53,396 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/DeviceDevice'
+              $ref: '#/components/schemas/Device'
+            examples:
+              Example1:
+                value:
+                  fcm_token: >-
+                    qweKu7bdTZumJpzxUqqpxe:APA91bE9FSScPK_kENPpBAj0URYDo4z0tE6aOrBtpgaA1I1OC7GBes1lR71EWRhavLGMzDMKPPLkUoqtvPHzCgq
+                  platform: android
   /v1/apps/{app_id}/users/{user_id}/devices/{device_id}:
     put:
       description: Update a Device for a User.
-      operationId: DeviceService.update
+      operationId: deviceService.update
       tags:
-        - DeviceService
+        - Device
       parameters:
         - name: app_id
           in: path
           description: your app identifier
           required: true
           schema:
-            $ref: '#/components/schemas/IdsAppId'
+            $ref: '#/components/schemas/AppId'
+          examples:
+            Example1:
+              value: my-app-id
         - name: user_id
           in: path
           description: your user identifier
           required: true
           schema:
-            $ref: '#/components/schemas/IdsUserId'
+            $ref: '#/components/schemas/UserId'
+          examples:
+            Example1:
+              value: my-user-id
         - name: device_id
           in: path
           description: your device identifier; the same as device_sid
           required: true
           schema:
-            $ref: '#/components/schemas/IdsDeviceId'
+            $ref: '#/components/schemas/DeviceId'
+          examples:
+            Example1:
+              value: my-device-id
       responses:
         '200':
           description: Returns the updated Device
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DeviceDevice'
+                $ref: '#/components/schemas/Device'
+              examples:
+                Example1:
+                  value:
+                    id: my-device-id
+                    platform: android
       security: *ref_0
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/DeviceDevice'
+              $ref: '#/components/schemas/Device'
+            examples:
+              Example1:
+                value:
+                  fcm_token: >-
+                    qweKu7bdTZumJpzxUqqpxe:APA91bE9FSScPK_kENPpBAj0URYDo4z0tE6aOrBtpgaA1I1OC7GBes1lR71EWRhavLGMzDMKPPLkUoqtvPHzCgq
+                  platform: android
     delete:
       description: Delete a Device for a User
-      operationId: DeviceService.delete
+      operationId: deviceService.delete
       tags:
-        - DeviceService
+        - Device
       parameters:
         - name: app_id
           in: path
           description: your app identifier
           required: true
           schema:
-            $ref: '#/components/schemas/IdsAppId'
+            $ref: '#/components/schemas/AppId'
         - name: user_id
           in: path
           description: your user identifier
           required: true
           schema:
-            $ref: '#/components/schemas/IdsUserId'
+            $ref: '#/components/schemas/UserId'
         - name: device_id
           in: path
           description: your device identifier
           required: true
           schema:
-            $ref: '#/components/schemas/IdsDeviceId'
+            $ref: '#/components/schemas/DeviceId'
       responses:
         '204':
           description: ''
       security: *ref_0
     get:
       description: Get a Device for a User
-      operationId: DeviceService.getDevice
+      operationId: deviceService.getDevice
       tags:
-        - DeviceService
+        - Device
       parameters:
         - name: app_id
           in: path
           description: your app identifier
           required: true
           schema:
-            $ref: '#/components/schemas/IdsAppId'
+            $ref: '#/components/schemas/AppId'
         - name: user_id
           in: path
           description: your user identifier
           required: true
           schema:
-            $ref: '#/components/schemas/IdsUserId'
+            $ref: '#/components/schemas/UserId'
         - name: device_id
           in: path
           description: your device identifier
           required: true
           schema:
-            $ref: '#/components/schemas/IdsDeviceId'
+            $ref: '#/components/schemas/DeviceId'
       responses:
         '200':
           description: ''
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DeviceDevice'
+                $ref: '#/components/schemas/Device'
       security: *ref_0
   /v1/apps/{app_id}/events/send:
     post:
       description: This endpoint allows you to send messages
-      operationId: EventService.send
+      operationId: eventService.send
       tags:
-        - EventService
+        - Event
       parameters:
         - name: app_id
           in: path
+          description: The `id` of the app
           required: true
           schema:
-            $ref: '#/components/schemas/IdsAppId'
+            $ref: '#/components/schemas/AppId'
+          examples:
+            Example1:
+              value: my_app_id
+            Example2:
+              value: my_app_id
       responses:
         '200':
           description: ''
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EventSendEventResponse'
+                $ref: '#/components/schemas/SendEventResponse'
+              examples:
+                Example1:
+                  value:
+                    id: 1d1ed73c-96e6-4aa3-abc2-2e9a926f773a
+                    success: true
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventNotFoundErrorBody'
+              examples:
+                Example1:
+                  value:
+                    success: false
+                    error: event not found
       security: *ref_0
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/EventSendEventRequest'
+              type: object
+              properties:
+                event:
+                  type: string
+                  description: The name of the event
+                  example: sample_event_1
+                data:
+                  type: object
+                  additionalProperties: {}
+                user:
+                  $ref: '#/components/schemas/User'
+                scheduleAt:
+                  type: integer
+                  format: int64
+                  description: |
+                    Time to send message expressed as UTC milliseconds. 
+                    If not present, message will be sent immediately.
+                override:
+                  $ref: '#/components/schemas/EventOverride'
+              required:
+                - event
+                - data
+            examples:
+              Example1:
+                value:
+                  event: sample_event_1
+                  data:
+                    name: name
+                    date: 01 December 2022
+                  user:
+                    mobile: '+919876543210'
+                    email: x@ravenapp.dev
+                    whatsapp_mobile: '+919876543210'
+              Example2:
+                value:
+                  event: sample_event_1
+                  data:
+                    name: name
+                    date: 01 December 2022
+                  user:
+                    mobile: '+919876543210'
+                    email: x@ravenapp.dev
+                    whatsapp_mobile: '+919876543210'
   /v1/apps/{app_id}/events/bulk_send:
     post:
-      operationId: EventService.sendBulk
+      operationId: eventService.sendBulk
       tags:
-        - EventService
+        - Event
       parameters:
         - name: app_id
           in: path
           required: true
           schema:
-            $ref: '#/components/schemas/IdsAppId'
+            $ref: '#/components/schemas/AppId'
+          examples:
+            Example1:
+              value: my-app-id
       responses:
         '200':
           description: ''
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EventSendEventResponse'
+                $ref: '#/components/schemas/SendEventResponse'
+              examples:
+                Example1:
+                  value:
+                    id: 1d1ed73c-96e6-4aa3-abc2-2e9a926f773a
+                    success: true
       security: *ref_0
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/EventBulkSendEventRequest'
+              type: object
+              properties:
+                event:
+                  type: string
+                  example: sample_event_1
+                batch:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/BatchEvent'
+                  description: List of events
+              required:
+                - event
+                - batch
+            examples:
+              Example1:
+                value:
+                  event: sample_event_1
+                  batch:
+                    - user:
+                        mobile: '+919876543210'
+                        email: x@ravenapp.dev
+                        whatsapp_mobile: '+919876543210'
+                      data:
+                        name: John Doe
+                        date: 01 December 2022
+                    - user:
+                        mobile: '+919876543210'
+                        email: x@ravenapp.dev
+                        whatsapp_mobile: '+919876543210'
+                      data:
+                        name: John Doe
+                        date: 01 December 2022
   /v1/apps/{app_id}/users:
     post:
       description: Creates an AppUser if doesn't exist already, or updates user properties
-      operationId: UserService.createOrUpdate
+      operationId: userService.createOrUpdate
       tags:
-        - UserService
+        - User
       parameters:
         - name: app_id
           in: path
           required: true
           schema:
-            $ref: '#/components/schemas/IdsAppId'
+            $ref: '#/components/schemas/AppId'
+          examples:
+            Example1:
+              value: my-app-id
       responses:
         '200':
           description: Returns updated or newly created user.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserRavenUser'
+                $ref: '#/components/schemas/RavenUser'
+              examples:
+                Example1:
+                  value:
+                    user_id: test-user
+                    slack:
+                      access_token: my-access-token
+                      email: x@ravenapp.dev
+                      channel_id: channel-123
       security: *ref_0
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserCreateUserRequest'
+              type: object
+              properties:
+                user_id:
+                  $ref: '#/components/schemas/UserId'
+                  description: |
+                    Your user identifier. 
+                      if user_id already exists, user properties will be updated else a new user will be created
+                mobile:
+                  type: string
+                email:
+                  type: string
+                whats_app:
+                  type: string
+                  description: >-
+                    include this only when user's whatsapp mobile is different
+                    than primary mobile
+              required:
+                - user_id
+            examples:
+              Example1:
+                value:
+                  user_id: test-user
+                  mobile: '9876543210'
+                  email: x@ravenapp.dev
   /v1/apps/{app_id}/users/{user_id}:
     get:
       description: Gets the requested user
-      operationId: UserService.get
+      operationId: userService.get
       tags:
-        - UserService
+        - User
       parameters:
         - name: app_id
           in: path
           description: your app identifier
           required: true
           schema:
-            $ref: '#/components/schemas/IdsAppId'
+            $ref: '#/components/schemas/AppId'
+          examples:
+            Example1:
+              value: my-app-id
         - name: user_id
           in: path
           description: your user identifier
           required: true
           schema:
-            $ref: '#/components/schemas/IdsUserId'
+            $ref: '#/components/schemas/UserId'
+          examples:
+            Example1:
+              value: my-user-id
       responses:
         '200':
           description: ''
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserRavenUser'
+                $ref: '#/components/schemas/RavenUser'
+              examples:
+                Example1:
+                  value:
+                    user_id: my-user-id
+                    slack:
+                      access_token: my-access-token
+                      email: x@ravenapp.dev
+                      channel_id: channel-123
       security: *ref_0
 components:
   schemas:
-    DeviceDevice:
+    Device:
       type: object
       properties:
         id:
           type: string
         platform:
-          $ref: '#/components/schemas/DevicePlatform'
+          $ref: '#/components/schemas/Platform'
         onesignal_player_id:
           type: string
         xiaomi_token:
@@ -272,7 +460,7 @@ components:
           type: string
           description: user id affiliated with device
         device_sid:
-          $ref: '#/components/schemas/IdsDeviceId'
+          $ref: '#/components/schemas/DeviceId'
         notifications_disabled:
           type: boolean
         created_at:
@@ -281,50 +469,22 @@ components:
         updated_at:
           type: integer
           format: int64
-    DevicePlatform:
+    Platform:
       type: string
       enum:
         - android
         - web
         - ios
-    EventSendEventRequest:
-      type: object
-      properties:
-        event:
-          type: string
-          description: event name
-        data:
-          type: object
-          additionalProperties: {}
-          description: |
-            {
-            "param1" : "<value1>",
-            "param2" : "<value2>",
-            "param3" : object/array"
-            }
-        user:
-          $ref: '#/components/schemas/EventUser'
-        scheduleAt:
-          type: integer
-          format: int64
-          description: |
-            Time to send message expressed as UTC milliseconds. 
-            If not present, message will be sent immediately.
-        override:
-          $ref: '#/components/schemas/EventEventOverride'
-      required:
-        - event
-        - data
-    EventUser:
+    User:
       type: object
       properties:
         user_id:
-          $ref: '#/components/schemas/IdsUserId'
+          $ref: '#/components/schemas/UserId'
           description: >
             userId to send the notifications to. 
 
-            This is  your own user identifier which you have used to create user
-            on Raven
+            This is  your own user identifier which you have used to [create
+            user on Raven](https://docs.raven.dev/api-reference/create-user)
         email:
           type: string
         mobile:
@@ -337,7 +497,7 @@ components:
             if empty, `mobile` is considered for whatsapp
         onesignal_external_id:
           type: string
-          description: >-
+          description: >
             [OneSignal external user
             IDs](https://documentation.onesignal.com/docs/external-user-ids)
         onesignal_player_ids:
@@ -354,41 +514,41 @@ components:
           items:
             type: string
         slack:
-          $ref: '#/components/schemas/UserSlackProfile'
+          $ref: '#/components/schemas/SlackProfile'
         telegram:
-          $ref: '#/components/schemas/UserTelegramProfile'
+          $ref: '#/components/schemas/TelegramProfile'
         fcm_topic:
           type: string
         fcm_device_group:
           type: string
-    EventEventOverride:
+    EventOverride:
       type: object
       properties:
         email:
-          $ref: '#/components/schemas/EventEmailOverride'
+          $ref: '#/components/schemas/EmailOverride'
         sms:
-          $ref: '#/components/schemas/EventSmsOverride'
+          $ref: '#/components/schemas/SmsOverride'
         whatsapp:
-          $ref: '#/components/schemas/EventWhatsappOverride'
+          $ref: '#/components/schemas/WhatsappOverride'
         push:
-          $ref: '#/components/schemas/EventPushOverride'
+          $ref: '#/components/schemas/PushOverride'
         webhook:
-          $ref: '#/components/schemas/EventWebhookOverride'
+          $ref: '#/components/schemas/WebhookOverride'
         voice:
-          $ref: '#/components/schemas/EventVoiceOverride'
+          $ref: '#/components/schemas/VoiceOverride'
         slack:
-          $ref: '#/components/schemas/EventSlackOverride'
+          $ref: '#/components/schemas/SlackOverride'
         in_app:
-          $ref: '#/components/schemas/EventInAppOverride'
+          $ref: '#/components/schemas/InAppOverride'
         telegram:
-          $ref: '#/components/schemas/EventTelegramOverride'
+          $ref: '#/components/schemas/TelegramOverride'
         providers:
           type: object
           additionalProperties:
-            $ref: '#/components/schemas/EventProviderOverride'
+            $ref: '#/components/schemas/ProviderOverride'
       required:
         - providers
-    EventChannelOverride:
+    ChannelOverride:
       type: object
       properties:
         schedule_at:
@@ -396,7 +556,7 @@ components:
           format: int64
       required:
         - schedule_at
-    EventEmailRecipient:
+    EmailRecipient:
       type: object
       properties:
         name:
@@ -406,7 +566,7 @@ components:
       required:
         - name
         - address
-    EventAttachment:
+    Attachment:
       type: object
       properties:
         file_name:
@@ -419,7 +579,7 @@ components:
         - file_name
         - content
         - url
-    EventEmailMessage:
+    EmailMessage:
       type: object
       properties:
         text:
@@ -432,25 +592,25 @@ components:
         - text
         - html_body
         - subject
-    EventEmailOverride:
+    EmailOverride:
       type: object
       properties:
         from:
-          $ref: '#/components/schemas/EventEmailRecipient'
+          $ref: '#/components/schemas/EmailRecipient'
         cc:
           type: array
           items:
-            $ref: '#/components/schemas/EventEmailRecipient'
+            $ref: '#/components/schemas/EmailRecipient'
         bcc:
           type: array
           items:
-            $ref: '#/components/schemas/EventEmailRecipient'
+            $ref: '#/components/schemas/EmailRecipient'
         attachments:
           type: array
           items:
-            $ref: '#/components/schemas/EventAttachment'
+            $ref: '#/components/schemas/Attachment'
         message:
-          $ref: '#/components/schemas/EventEmailMessage'
+          $ref: '#/components/schemas/EmailMessage'
       required:
         - from
         - cc
@@ -458,51 +618,51 @@ components:
         - attachments
         - message
       allOf:
-        - $ref: '#/components/schemas/EventChannelOverride'
-    EventSmsMessage:
+        - $ref: '#/components/schemas/ChannelOverride'
+    SmsMessage:
       type: object
       properties:
         text:
           type: string
       required:
         - text
-    EventSmsOverride:
+    SmsOverride:
       type: object
       properties:
         sender:
           type: string
         message:
-          $ref: '#/components/schemas/EventSmsMessage'
+          $ref: '#/components/schemas/SmsMessage'
       required:
         - sender
         - message
       allOf:
-        - $ref: '#/components/schemas/EventChannelOverride'
-    EventWhatsappOverride:
+        - $ref: '#/components/schemas/ChannelOverride'
+    WhatsappOverride:
       type: object
       properties:
         message:
-          $ref: '#/components/schemas/EventSmsMessage'
+          $ref: '#/components/schemas/SmsMessage'
       required:
         - message
       allOf:
-        - $ref: '#/components/schemas/EventChannelOverride'
-    EventPushOverride:
+        - $ref: '#/components/schemas/ChannelOverride'
+    PushOverride:
       type: object
       properties: {}
       allOf:
-        - $ref: '#/components/schemas/EventChannelOverride'
-    EventWebhookOverride:
+        - $ref: '#/components/schemas/ChannelOverride'
+    WebhookOverride:
       type: object
       properties: {}
       allOf:
-        - $ref: '#/components/schemas/EventChannelOverride'
-    EventVoiceOverride:
+        - $ref: '#/components/schemas/ChannelOverride'
+    VoiceOverride:
       type: object
       properties: {}
       allOf:
-        - $ref: '#/components/schemas/EventChannelOverride'
-    EventSlackMessage:
+        - $ref: '#/components/schemas/ChannelOverride'
+    SlackMessage:
       type: object
       properties:
         text:
@@ -511,26 +671,26 @@ components:
       required:
         - text
         - blocks
-    EventSlackOverride:
+    SlackOverride:
       type: object
       properties:
         message:
-          $ref: '#/components/schemas/EventSlackMessage'
+          $ref: '#/components/schemas/SlackMessage'
       required:
         - message
       allOf:
-        - $ref: '#/components/schemas/EventChannelOverride'
-    EventInAppOverride:
+        - $ref: '#/components/schemas/ChannelOverride'
+    InAppOverride:
       type: object
       properties: {}
       allOf:
-        - $ref: '#/components/schemas/EventChannelOverride'
-    EventTelegramOverride:
+        - $ref: '#/components/schemas/ChannelOverride'
+    TelegramOverride:
       type: object
       properties: {}
       allOf:
-        - $ref: '#/components/schemas/EventChannelOverride'
-    EventParam:
+        - $ref: '#/components/schemas/ChannelOverride'
+    Param:
       type: object
       properties:
         name:
@@ -540,7 +700,7 @@ components:
       required:
         - name
         - value
-    EventProviderOverride:
+    ProviderOverride:
       type: object
       properties:
         payload:
@@ -549,49 +709,37 @@ components:
         form_params:
           type: array
           items:
-            $ref: '#/components/schemas/EventParam'
+            $ref: '#/components/schemas/Param'
         query_params:
           type: array
           items:
-            $ref: '#/components/schemas/EventParam'
+            $ref: '#/components/schemas/Param'
         path_params:
           type: array
           items:
-            $ref: '#/components/schemas/EventParam'
+            $ref: '#/components/schemas/Param'
         headers:
           type: array
           items:
-            $ref: '#/components/schemas/EventParam'
+            $ref: '#/components/schemas/Param'
       required:
         - payload
         - form_params
         - query_params
         - path_params
         - headers
-    EventSendEventResponse:
+    SendEventResponse:
       type: object
       properties:
         id:
-          $ref: '#/components/schemas/IdsRequestId'
+          $ref: '#/components/schemas/RequestId'
         success:
           type: boolean
+          example: true
       required:
         - id
         - success
-    EventBulkSendEventRequest:
-      type: object
-      properties:
-        event:
-          type: string
-        batch:
-          type: array
-          items:
-            $ref: '#/components/schemas/EventBatchEvent'
-          description: List of events
-      required:
-        - event
-        - batch
-    EventBatchEvent:
+    BatchEvent:
       type: object
       properties:
         data:
@@ -604,43 +752,34 @@ components:
             "param3" : object/array"
             }
         user:
-          $ref: '#/components/schemas/EventUser'
+          $ref: '#/components/schemas/User'
         override:
-          $ref: '#/components/schemas/EventEventOverride'
+          $ref: '#/components/schemas/EventOverride'
       required:
         - data
-    IdsAppId:
-      type: string
-    IdsUserId:
-      type: string
-    IdsRequestId:
-      type: string
-    IdsDeviceId:
-      type: string
-    UserCreateUserRequest:
+    EventNotFoundErrorBody:
       type: object
       properties:
-        user_id:
-          $ref: '#/components/schemas/IdsUserId'
-          description: |
-            Your user identifier. 
-              if user_id already exists, user properties will be updated else a new user will be created
-        mobile:
+        success:
+          type: boolean
+        error:
           type: string
-        email:
-          type: string
-        whats_app:
-          type: string
-          description: >-
-            include this only when user's whatsapp mobile is different than
-            primary mobile
       required:
-        - user_id
-    UserRavenUser:
+        - success
+        - error
+    AppId:
+      type: string
+    UserId:
+      type: string
+    RequestId:
+      type: string
+    DeviceId:
+      type: string
+    RavenUser:
       type: object
       properties:
         user_id:
-          $ref: '#/components/schemas/IdsUserId'
+          $ref: '#/components/schemas/UserId'
           description: >
             Your user identifier. 
 
@@ -660,9 +799,9 @@ components:
             Include this only when user's whatsapp mobile is different than
             primary mobile
         slack:
-          $ref: '#/components/schemas/UserSlackProfile'
+          $ref: '#/components/schemas/SlackProfile'
         telegram:
-          $ref: '#/components/schemas/UserTelegramProfile'
+          $ref: '#/components/schemas/TelegramProfile'
         fcm_tokens:
           type: array
           items:
@@ -683,7 +822,7 @@ components:
           format: int64
       required:
         - user_id
-    UserSlackProfile:
+    SlackProfile:
       type: object
       properties:
         access_token:
@@ -694,21 +833,21 @@ components:
           type: string
       required:
         - access_token
-    UserTelegramProfile:
+    TelegramProfile:
       type: object
       properties:
         chat_id:
           type: string
       required:
         - chat_id
-    UserUserPreferences:
+    UserPreferences:
       type: object
       properties:
         preferred_channel:
-          $ref: '#/components/schemas/UserChannel'
+          $ref: '#/components/schemas/Channel'
         channel_preferences:
-          $ref: '#/components/schemas/UserChannelPreferences'
-    UserChannel:
+          $ref: '#/components/schemas/ChannelPreferences'
+    Channel:
       type: string
       enum:
         - VOICE
@@ -720,24 +859,24 @@ components:
         - SLACK
         - IN_APP
         - TELEGRAM
-    UserChannelPreferences:
+    ChannelPreferences:
       type: object
       properties:
         sms:
-          $ref: '#/components/schemas/UserChannelPreference'
+          $ref: '#/components/schemas/ChannelPreference'
         push:
-          $ref: '#/components/schemas/UserChannelPreference'
+          $ref: '#/components/schemas/ChannelPreference'
         whatsapp:
-          $ref: '#/components/schemas/UserChannelPreference'
+          $ref: '#/components/schemas/ChannelPreference'
         email:
-          $ref: '#/components/schemas/UserChannelPreference'
+          $ref: '#/components/schemas/ChannelPreference'
         slack:
-          $ref: '#/components/schemas/UserChannelPreference'
+          $ref: '#/components/schemas/ChannelPreference'
         voice:
-          $ref: '#/components/schemas/UserChannelPreference'
+          $ref: '#/components/schemas/ChannelPreference'
         teams:
-          $ref: '#/components/schemas/UserChannelPreference'
-    UserChannelPreference:
+          $ref: '#/components/schemas/ChannelPreference'
+    ChannelPreference:
       type: object
       properties:
         disabled:
@@ -751,3 +890,4 @@ components:
       name: Authorization
 servers:
   - url: https://api.ravenapp.dev
+    description: Prod
