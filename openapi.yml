@@ -3,283 +3,6 @@ info:
   title: Raven API
   version: ''
 paths:
-  /v1/apps/{app_id}/users/{user_id}/devices:
-    post:
-      description: >
-        Add Device for a User. 
-
-        If a device_sid is specified, then devices will be merged if one is
-        found.
-
-        If no device_sid is specified, then a new device will be created.
-      operationId: deviceService.add
-      tags:
-        - Device
-      parameters:
-        - name: app_id
-          in: path
-          description: your app identifier
-          required: true
-          schema:
-            $ref: '#/components/schemas/AppId'
-          examples:
-            Example1:
-              value: my-app-id
-        - name: user_id
-          in: path
-          description: your user identifier
-          required: true
-          schema:
-            $ref: '#/components/schemas/UserId'
-          examples:
-            Example1:
-              value: my-user-id
-      responses:
-        '200':
-          description: Returns the updated Device
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Device'
-              examples:
-                Example1:
-                  value:
-                    id: my-device-id
-                    platform: android
-      security: &ref_0
-        - AuthorizationAuth: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Device'
-            examples:
-              Example1:
-                value:
-                  fcm_token: >-
-                    qweKu7bdTZumJpzxUqqpxe:APA91bE9FSScPK_kENPpBAj0URYDo4z0tE6aOrBtpgaA1I1OC7GBes1lR71EWRhavLGMzDMKPPLkUoqtvPHzCgq
-                  platform: android
-  /v1/apps/{app_id}/users/{user_id}/devices/{device_id}:
-    put:
-      description: Update a Device for a User.
-      operationId: deviceService.update
-      tags:
-        - Device
-      parameters:
-        - name: app_id
-          in: path
-          description: your app identifier
-          required: true
-          schema:
-            $ref: '#/components/schemas/AppId'
-          examples:
-            Example1:
-              value: my-app-id
-        - name: user_id
-          in: path
-          description: your user identifier
-          required: true
-          schema:
-            $ref: '#/components/schemas/UserId'
-          examples:
-            Example1:
-              value: my-user-id
-        - name: device_id
-          in: path
-          description: your device identifier; the same as device_sid
-          required: true
-          schema:
-            $ref: '#/components/schemas/DeviceId'
-          examples:
-            Example1:
-              value: my-device-id
-      responses:
-        '200':
-          description: Returns the updated Device
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Device'
-              examples:
-                Example1:
-                  value:
-                    id: my-device-id
-                    platform: android
-      security: *ref_0
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Device'
-            examples:
-              Example1:
-                value:
-                  fcm_token: >-
-                    qweKu7bdTZumJpzxUqqpxe:APA91bE9FSScPK_kENPpBAj0URYDo4z0tE6aOrBtpgaA1I1OC7GBes1lR71EWRhavLGMzDMKPPLkUoqtvPHzCgq
-                  platform: android
-    delete:
-      description: Delete a Device for a User
-      operationId: deviceService.delete
-      tags:
-        - Device
-      parameters:
-        - name: app_id
-          in: path
-          description: your app identifier
-          required: true
-          schema:
-            $ref: '#/components/schemas/AppId'
-        - name: user_id
-          in: path
-          description: your user identifier
-          required: true
-          schema:
-            $ref: '#/components/schemas/UserId'
-        - name: device_id
-          in: path
-          description: your device identifier
-          required: true
-          schema:
-            $ref: '#/components/schemas/DeviceId'
-      responses:
-        '204':
-          description: ''
-      security: *ref_0
-    get:
-      description: Get a Device for a User
-      operationId: deviceService.getDevice
-      tags:
-        - Device
-      parameters:
-        - name: app_id
-          in: path
-          description: your app identifier
-          required: true
-          schema:
-            $ref: '#/components/schemas/AppId'
-        - name: user_id
-          in: path
-          description: your user identifier
-          required: true
-          schema:
-            $ref: '#/components/schemas/UserId'
-        - name: device_id
-          in: path
-          description: your device identifier
-          required: true
-          schema:
-            $ref: '#/components/schemas/DeviceId'
-      responses:
-        '200':
-          description: ''
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Device'
-      security: *ref_0
-  /v1/apps/{app_id}/users:
-    post:
-      description: Creates an AppUser if doesn't exist already, or updates user properties
-      operationId: userService.createOrUpdate
-      tags:
-        - User
-      parameters:
-        - name: app_id
-          in: path
-          required: true
-          schema:
-            $ref: '#/components/schemas/AppId'
-          examples:
-            Example1:
-              value: my-app-id
-      responses:
-        '200':
-          description: Returns updated or newly created user.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/RavenUser'
-              examples:
-                Example1:
-                  value:
-                    user_id: test-user
-                    slack:
-                      access_token: my-access-token
-                      email: x@ravenapp.dev
-                      channel_id: channel-123
-      security: *ref_0
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                user_id:
-                  $ref: '#/components/schemas/UserId'
-                  description: |
-                    Your user identifier. 
-                      if user_id already exists, user properties will be updated else a new user will be created
-                mobile:
-                  type: string
-                email:
-                  type: string
-                whats_app:
-                  type: string
-                  description: >-
-                    include this only when user's whatsapp mobile is different
-                    than primary mobile
-              required:
-                - user_id
-            examples:
-              Example1:
-                value:
-                  user_id: test-user
-                  mobile: '9876543210'
-                  email: x@ravenapp.dev
-  /v1/apps/{app_id}/users/{user_id}:
-    get:
-      description: Gets the requested user
-      operationId: userService.get
-      tags:
-        - User
-      parameters:
-        - name: app_id
-          in: path
-          description: your app identifier
-          required: true
-          schema:
-            $ref: '#/components/schemas/AppId'
-          examples:
-            Example1:
-              value: my-app-id
-        - name: user_id
-          in: path
-          description: your user identifier
-          required: true
-          schema:
-            $ref: '#/components/schemas/UserId'
-          examples:
-            Example1:
-              value: my-user-id
-      responses:
-        '200':
-          description: ''
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/RavenUser'
-              examples:
-                Example1:
-                  value:
-                    user_id: my-user-id
-                    slack:
-                      access_token: my-access-token
-                      email: x@ravenapp.dev
-                      channel_id: channel-123
-      security: *ref_0
   /v1/apps/{app_id}/events/send:
     post:
       description: This endpoint allows you to send messages
@@ -321,7 +44,8 @@ paths:
                   value:
                     success: false
                     error: event not found
-      security: *ref_0
+      security: &ref_0
+        - AuthKeyAuth: []
       requestBody:
         required: true
         content:
@@ -434,163 +158,284 @@ paths:
                       data:
                         name: John Doe
                         date: 01 December 2022
+  /v1/apps/{app_id}/users/{user_id}/devices:
+    post:
+      description: >
+        Add Device for a User. 
+
+        If a device_sid is specified, then devices will be merged if one is
+        found.
+
+        If no device_sid is specified, then a new device will be created.
+      operationId: DeviceService.add
+      tags:
+        - Device
+      parameters:
+        - name: app_id
+          in: path
+          description: your app identifier
+          required: true
+          schema:
+            $ref: '#/components/schemas/AppId'
+          examples:
+            Example1:
+              value: my-app-id
+        - name: user_id
+          in: path
+          description: your user identifier
+          required: true
+          schema:
+            $ref: '#/components/schemas/UserId'
+          examples:
+            Example1:
+              value: my-user-id
+      responses:
+        '200':
+          description: Returns the updated Device
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Device'
+              examples:
+                Example1:
+                  value:
+                    id: my-device-id
+                    platform: android
+      security: *ref_0
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Device'
+            examples:
+              Example1:
+                value:
+                  fcm_token: >-
+                    qweKu7bdTZumJpzxUqqpxe:APA91bE9FSScPK_kENPpBAj0URYDo4z0tE6aOrBtpgaA1I1OC7GBes1lR71EWRhavLGMzDMKPPLkUoqtvPHzCgq
+                  platform: android
+  /v1/apps/{app_id}/users/{user_id}/devices/{device_id}:
+    put:
+      description: Update a Device for a User.
+      operationId: DeviceService.update
+      tags:
+        - Device
+      parameters:
+        - name: app_id
+          in: path
+          description: your app identifier
+          required: true
+          schema:
+            $ref: '#/components/schemas/AppId'
+          examples:
+            Example1:
+              value: my-app-id
+        - name: user_id
+          in: path
+          description: your user identifier
+          required: true
+          schema:
+            $ref: '#/components/schemas/UserId'
+          examples:
+            Example1:
+              value: my-user-id
+        - name: device_id
+          in: path
+          description: your device identifier; the same as device_sid
+          required: true
+          schema:
+            $ref: '#/components/schemas/DeviceId'
+          examples:
+            Example1:
+              value: my-device-id
+      responses:
+        '200':
+          description: Returns the updated Device
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Device'
+              examples:
+                Example1:
+                  value:
+                    id: my-device-id
+                    platform: android
+      security: *ref_0
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Device'
+            examples:
+              Example1:
+                value:
+                  fcm_token: >-
+                    qweKu7bdTZumJpzxUqqpxe:APA91bE9FSScPK_kENPpBAj0URYDo4z0tE6aOrBtpgaA1I1OC7GBes1lR71EWRhavLGMzDMKPPLkUoqtvPHzCgq
+                  platform: android
+    delete:
+      description: Delete a Device for a User
+      operationId: DeviceService.delete
+      tags:
+        - Device
+      parameters:
+        - name: app_id
+          in: path
+          description: your app identifier
+          required: true
+          schema:
+            $ref: '#/components/schemas/AppId'
+        - name: user_id
+          in: path
+          description: your user identifier
+          required: true
+          schema:
+            $ref: '#/components/schemas/UserId'
+        - name: device_id
+          in: path
+          description: your device identifier
+          required: true
+          schema:
+            $ref: '#/components/schemas/DeviceId'
+      responses:
+        '204':
+          description: ''
+      security: *ref_0
+    get:
+      description: Get a Device for a User
+      operationId: DeviceService.getDevice
+      tags:
+        - Device
+      parameters:
+        - name: app_id
+          in: path
+          description: your app identifier
+          required: true
+          schema:
+            $ref: '#/components/schemas/AppId'
+        - name: user_id
+          in: path
+          description: your user identifier
+          required: true
+          schema:
+            $ref: '#/components/schemas/UserId'
+        - name: device_id
+          in: path
+          description: your device identifier
+          required: true
+          schema:
+            $ref: '#/components/schemas/DeviceId'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Device'
+      security: *ref_0
+  /v1/apps/{app_id}/users:
+    post:
+      description: Creates an AppUser if doesn't exist already, or updates user properties
+      operationId: UserService.createOrUpdate
+      tags:
+        - User
+      parameters:
+        - name: app_id
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/AppId'
+          examples:
+            Example1:
+              value: my-app-id
+      responses:
+        '200':
+          description: Returns updated or newly created user.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RavenUser'
+              examples:
+                Example1:
+                  value:
+                    user_id: test-user
+                    slack:
+                      access_token: my-access-token
+                      email: x@ravenapp.dev
+                      channel_id: channel-123
+      security: *ref_0
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  $ref: '#/components/schemas/UserId'
+                  description: |
+                    Your user identifier. 
+                      if user_id already exists, user properties will be updated else a new user will be created
+                mobile:
+                  type: string
+                email:
+                  type: string
+                whats_app:
+                  type: string
+                  description: >-
+                    include this only when user's whatsapp mobile is different
+                    than primary mobile
+              required:
+                - user_id
+            examples:
+              Example1:
+                value:
+                  user_id: test-user
+                  mobile: '9876543210'
+                  email: x@ravenapp.dev
+  /v1/apps/{app_id}/users/{user_id}:
+    get:
+      description: Gets the requested user
+      operationId: UserService.get
+      tags:
+        - User
+      parameters:
+        - name: app_id
+          in: path
+          description: your app identifier
+          required: true
+          schema:
+            $ref: '#/components/schemas/AppId'
+          examples:
+            Example1:
+              value: my-app-id
+        - name: user_id
+          in: path
+          description: your user identifier
+          required: true
+          schema:
+            $ref: '#/components/schemas/UserId'
+          examples:
+            Example1:
+              value: my-user-id
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RavenUser'
+              examples:
+                Example1:
+                  value:
+                    user_id: my-user-id
+                    slack:
+                      access_token: my-access-token
+                      email: x@ravenapp.dev
+                      channel_id: channel-123
+      security: *ref_0
 components:
   schemas:
-    Device:
-      type: object
-      properties:
-        id:
-          type: string
-        platform:
-          $ref: '#/components/schemas/Platform'
-        onesignal_player_id:
-          type: string
-        xiaomi_token:
-          type: string
-        oppo_token:
-          type: string
-        vivo_token:
-          type: string
-        huaweiToken:
-          type: string
-        fcm_token:
-          type: string
-          description: firebase device token
-        raven_id:
-          type: string
-          description: user id affiliated with device
-        device_sid:
-          $ref: '#/components/schemas/DeviceId'
-        notifications_disabled:
-          type: boolean
-        created_at:
-          type: integer
-          format: int64
-        updated_at:
-          type: integer
-          format: int64
-    Platform:
-      type: string
-      enum:
-        - android
-        - web
-        - ios
-    AppId:
-      type: string
-    UserId:
-      type: string
-    RequestId:
-      type: string
-    DeviceId:
-      type: string
-    RavenUser:
-      type: object
-      properties:
-        user_id:
-          $ref: '#/components/schemas/UserId'
-          description: >
-            Your user identifier. 
-
-            If user_id already exists, user properties will be updated else a
-            new user will be created
-        user_sid:
-          type: string
-        onesignal_external_id:
-          type: string
-        mobile:
-          type: string
-        email:
-          type: string
-        whatsapp_mobile:
-          type: string
-          description: >-
-            Include this only when user's whatsapp mobile is different than
-            primary mobile
-        slack:
-          $ref: '#/components/schemas/SlackProfile'
-        telegram:
-          $ref: '#/components/schemas/TelegramProfile'
-        fcm_tokens:
-          type: array
-          items:
-            type: string
-        onesignal_player_ids:
-          type: array
-          items:
-            type: string
-        ios_tokens:
-          type: array
-          items:
-            type: string
-        created_at:
-          type: integer
-          format: int64
-        updated_at:
-          type: integer
-          format: int64
-      required:
-        - user_id
-    SlackProfile:
-      type: object
-      properties:
-        access_token:
-          type: string
-        email:
-          type: string
-        channel_id:
-          type: string
-      required:
-        - access_token
-    TelegramProfile:
-      type: object
-      properties:
-        chat_id:
-          type: string
-      required:
-        - chat_id
-    UserPreferences:
-      type: object
-      properties:
-        preferred_channel:
-          $ref: '#/components/schemas/Channel'
-        channel_preferences:
-          $ref: '#/components/schemas/ChannelPreferences'
-    Channel:
-      type: string
-      enum:
-        - VOICE
-        - PUSH
-        - SMS
-        - EMAIL
-        - WHATSAPP
-        - WEBHOOK
-        - SLACK
-        - IN_APP
-        - TELEGRAM
-    ChannelPreferences:
-      type: object
-      properties:
-        sms:
-          $ref: '#/components/schemas/ChannelPreference'
-        push:
-          $ref: '#/components/schemas/ChannelPreference'
-        whatsapp:
-          $ref: '#/components/schemas/ChannelPreference'
-        email:
-          $ref: '#/components/schemas/ChannelPreference'
-        slack:
-          $ref: '#/components/schemas/ChannelPreference'
-        voice:
-          $ref: '#/components/schemas/ChannelPreference'
-        teams:
-          $ref: '#/components/schemas/ChannelPreference'
-    ChannelPreference:
-      type: object
-      properties:
-        disabled:
-          type: boolean
-      required:
-        - disabled
     User:
       type: object
       properties:
@@ -883,8 +728,163 @@ components:
       required:
         - success
         - error
+    Device:
+      type: object
+      properties:
+        id:
+          type: string
+        platform:
+          $ref: '#/components/schemas/Platform'
+        onesignal_player_id:
+          type: string
+        xiaomi_token:
+          type: string
+        oppo_token:
+          type: string
+        vivo_token:
+          type: string
+        huaweiToken:
+          type: string
+        fcm_token:
+          type: string
+          description: firebase device token
+        raven_id:
+          type: string
+          description: user id affiliated with device
+        device_sid:
+          $ref: '#/components/schemas/DeviceId'
+        notifications_disabled:
+          type: boolean
+        created_at:
+          type: integer
+          format: int64
+        updated_at:
+          type: integer
+          format: int64
+    Platform:
+      type: string
+      enum:
+        - android
+        - web
+        - ios
+    AppId:
+      type: string
+    UserId:
+      type: string
+    RequestId:
+      type: string
+    DeviceId:
+      type: string
+    RavenUser:
+      type: object
+      properties:
+        user_id:
+          $ref: '#/components/schemas/UserId'
+          description: >
+            Your user identifier. 
+
+            If user_id already exists, user properties will be updated else a
+            new user will be created
+        user_sid:
+          type: string
+        onesignal_external_id:
+          type: string
+        mobile:
+          type: string
+        email:
+          type: string
+        whatsapp_mobile:
+          type: string
+          description: >-
+            Include this only when user's whatsapp mobile is different than
+            primary mobile
+        slack:
+          $ref: '#/components/schemas/SlackProfile'
+        telegram:
+          $ref: '#/components/schemas/TelegramProfile'
+        fcm_tokens:
+          type: array
+          items:
+            type: string
+        onesignal_player_ids:
+          type: array
+          items:
+            type: string
+        ios_tokens:
+          type: array
+          items:
+            type: string
+        created_at:
+          type: integer
+          format: int64
+        updated_at:
+          type: integer
+          format: int64
+      required:
+        - user_id
+    SlackProfile:
+      type: object
+      properties:
+        access_token:
+          type: string
+        email:
+          type: string
+        channel_id:
+          type: string
+      required:
+        - access_token
+    TelegramProfile:
+      type: object
+      properties:
+        chat_id:
+          type: string
+      required:
+        - chat_id
+    UserPreferences:
+      type: object
+      properties:
+        preferred_channel:
+          $ref: '#/components/schemas/Channel'
+        channel_preferences:
+          $ref: '#/components/schemas/ChannelPreferences'
+    Channel:
+      type: string
+      enum:
+        - VOICE
+        - PUSH
+        - SMS
+        - EMAIL
+        - WHATSAPP
+        - WEBHOOK
+        - SLACK
+        - IN_APP
+        - TELEGRAM
+    ChannelPreferences:
+      type: object
+      properties:
+        sms:
+          $ref: '#/components/schemas/ChannelPreference'
+        push:
+          $ref: '#/components/schemas/ChannelPreference'
+        whatsapp:
+          $ref: '#/components/schemas/ChannelPreference'
+        email:
+          $ref: '#/components/schemas/ChannelPreference'
+        slack:
+          $ref: '#/components/schemas/ChannelPreference'
+        voice:
+          $ref: '#/components/schemas/ChannelPreference'
+        teams:
+          $ref: '#/components/schemas/ChannelPreference'
+    ChannelPreference:
+      type: object
+      properties:
+        disabled:
+          type: boolean
+      required:
+        - disabled
   securitySchemes:
-    AuthorizationAuth:
+    AuthKeyAuth:
       type: apiKey
       in: header
       name: Authorization
